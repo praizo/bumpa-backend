@@ -29,7 +29,7 @@ class LoyaltySystemTest extends TestCase
 
         // 1. Setup Data
         $user = User::factory()->create();
-        
+
         $achievement = Achievement::factory()->create([
             'name' => 'First Buy',
             'required_purchases' => 1,
@@ -44,10 +44,10 @@ class LoyaltySystemTest extends TestCase
         // 2. Perform Action (Simulate Purchase)
         // We can manually dispatch the event or call a service, 
         // assuming your Purchase creation logic fires the event.
-        
+
         // Let's assume you have a way to create a purchase that triggers the event.
         // For now, we simulate the code that would be in your PurchaseController:
-        
+
         $purchase = Purchase::create([
             'user_id' => $user->id,
             'amount' => 1000,
@@ -59,7 +59,7 @@ class LoyaltySystemTest extends TestCase
         PurchaseMade::dispatch($purchase, $user);
 
         // 3. Assertions
-        
+
         // Assert Achievement Unlocked
         $this->assertDatabaseHas('user_achievements', [
             'user_id' => $user->id,
@@ -69,25 +69,25 @@ class LoyaltySystemTest extends TestCase
         // Using events, the checks might be queued. 
         // If your listeners are "ShouldQueue", use "stopFakingQueue" or run synchronously for tests.
         // If strictly synchronous (or sync driver in phpunit.xml):
-        
+
         // Assert Badge Unlocked (Triggered by AchievementUnlocked)
         // We need to ensure the recursive events fired. 
         // Since we fired PurchaseMade, CheckAchievements ran -> unlocked achievement -> fired AchievementUnlocked -> CheckBadges ran -> unlocked badge.
-        
+
         $this->assertDatabaseHas('user_badges', [
             'user_id' => $user->id,
             'badge_id' => $badge->id,
         ]);
     }
-    
+
     public function test_api_returns_correct_progress(): void
     {
         $user = User::factory()->create();
         $achievement = Achievement::factory()->create(['name' => 'Test Ach']);
-        $user->achievements()->attach($achievement);
-        
+        $user->achievements()->attach($achievement, ['unlocked_at' => now()]);
+
         $response = $this->actingAs($user)->getJson("/api/users/{$user->id}/achievements");
-        
+
         $response->assertStatus(200)
             ->assertJsonFragment(['unlocked_achievements' => ['Test Ach']]);
     }
