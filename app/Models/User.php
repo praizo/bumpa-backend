@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
+
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'total_spent',
     ];
 
     /**
@@ -47,23 +49,22 @@ class User extends Authenticatable
         ];
     }
 
-        public function achievements(): BelongsToMany
+    public function achievements(): BelongsToMany
     {
         return $this->belongsToMany(Achievement::class, 'user_achievements')
-                    ->withPivot('unlocked_at')
-                    ->withTimestamps();
+            ->withPivot('unlocked_at')
+            ->withTimestamps();
     }
 
     public function badges(): BelongsToMany
     {
         return $this->belongsToMany(Badge::class, 'user_badges')
-                    ->withPivot('unlocked_at')
-                    ->withTimestamps();
+            ->withPivot('unlocked_at')
+            ->withTimestamps();
     }
 
     public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class);
     }
-
 }

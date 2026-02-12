@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LoyaltyController;
+use App\Http\Controllers\Api\PurchaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,9 +13,11 @@ Route::post('/login', [AuthController::class, 'login']);
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    
+
+    Route::post('/purchase', [PurchaseController::class, 'store']);
+
     Route::get('/users/{user}/achievements', [LoyaltyController::class, 'show']);
-    
+
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

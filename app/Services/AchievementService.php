@@ -9,34 +9,32 @@ use Illuminate\Support\Collection;
 
 class AchievementService
 {
-    public function __construct(
-        protected AchievementRepositoryInterface $achievementRepository
-    ) {}
+  public function __construct(
+    protected AchievementRepositoryInterface $achievementRepository
+  ) {}
 
-    public function checkAndUnlock(User $user, Purchase $purchase): Collection
-    {
-        $unlocked = collect();
-        $achievements = $this->achievementRepository->all();
+  public function checkAndUnlock(User $user, Purchase $purchase): Collection
+  {
+    $unlocked = collect();
+    $achievements = $this->achievementRepository->all();
+    $existingAchievementIds = $user->achievements()->pluck('achievements.id')->toArray();
 
-        // Eager load existing to reduce queries & avoid duplicates
-        $existingAchievementIds = $user->achievements()->pluck('achievements.id')->toArray();
-        
-        // Count total purchases including the new one
-        $purchaseCount = $user->purchases()->count();
+    // Update User's Total Spend
+    $newTotalSpent = $user->purchases()->sum('amount');
+    $user->update(['total_spent' => $newTotalSpent]);
 
-        foreach ($achievements as $achievement) {
-            if (in_array($achievement->id, $existingAchievementIds)) {
-                continue;
-            }
+    foreach ($achievements as $achievement) {
+      if (in_array($achievement->id, $existingAchievementIds)) {
+        continue;
+      }
 
-            // Logic updated to use 'required_purchases'
-            if ($purchaseCount >= $achievement->required_purchases) {
-                // Attach with timestamp
-                $user->achievements()->attach($achievement->id, ['unlocked_at' => now()]);
-                $unlocked->push($achievement);
-            }
-        }
-
-        return $unlocked;
+      // Check Spend Threshold
+      if ($newTotalSpent >= $achievement->required_spend) {
+        $user->achievements()->attach($achievement->id, ['unlocked_at' => now()]);
+        $unlocked->push($achievement);
+      }
     }
+
+    return $unlocked;
+  }
 }

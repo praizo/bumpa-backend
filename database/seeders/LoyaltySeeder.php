@@ -10,57 +10,25 @@ class LoyaltySeeder extends Seeder
 {
     public function run(): void
     {
-        // Create Achievements
-        Achievement::firstOrCreate(
-            ['name' => 'First Purchase'],
-            [
-                'description' => 'Make your first purchase.',
-                'required_purchases' => 1,
-            ]
-        );
+        // Create Achievements (Amount Based)
+        Achievement::firstOrCreate([
+            'name' => 'Big Spender I',
+            'description' => 'Spend over 10,000 NGN.',
+            'required_spend' => 10000,
+        ]);
 
-        Achievement::firstOrCreate(
-            ['name' => 'Loyal Customer'],
-            [
-                'description' => 'Make 5 purchases.',
-                'required_purchases' => 5,
-            ]
-        );
+        Achievement::firstOrCreate([
+            'name' => 'Big Spender II',
+            'description' => 'Spend over 30,000 NGN.',
+            'required_spend' => 30000,
+        ]);
 
-        Achievement::firstOrCreate(
-            ['name' => 'Big Spender'],
-            [
-                'description' => 'Make 10 purchases.',
-                'required_purchases' => 10,
-            ]
-        );
-
-        // Create Badges
-        Badge::firstOrCreate(
-            ['name' => 'Bronze Badge'],
-            [
-                'description' => 'Unlock 1 achievement.',
-                'required_achievements' => 1,
-                'cashback_amount' => 100,
-            ]
-        );
-
-        Badge::firstOrCreate(
-            ['name' => 'Silver Badge'],
-            [
-                'description' => 'Unlock 2 achievements.',
-                'required_achievements' => 2,
-                'cashback_amount' => 300,
-            ]
-        );
-
-        Badge::firstOrCreate(
-            ['name' => 'Gold Badge'],
-            [
-                'description' => 'Unlock 3 achievements.',
-                'required_achievements' => 3,
-                'cashback_amount' => 1000,
-            ]
-        );
+        // Create Badges (Achievement Count Based)
+        Badge::firstOrCreate([
+            'name' => 'Gold Badge',
+            'description' => 'Unlock 2 achievements.',
+            'required_achievements' => 2,
+            'cashback_amount' => 300,
+        ]);
     }
 }

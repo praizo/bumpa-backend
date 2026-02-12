@@ -14,7 +14,7 @@ class AchievementFactory extends Factory
         return [
             'name' => $this->faker->unique()->words(3, true),
             'description' => $this->faker->sentence(),
-            'required_purchases' => $this->faker->numberBetween(1, 10),
+            'required_spend' => $this->faker->numberBetween(1000, 50000),
             'metadata' => null,
         ];
     }

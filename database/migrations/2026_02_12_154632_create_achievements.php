@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('description')->nullable();
-            $table->integer('required_purchases')->unsigned();
+            $table->decimal('required_spend', 10, 2);
             $table->json('metadata')->nullable();
             $table->timestamps();
         });

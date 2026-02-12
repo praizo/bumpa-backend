@@ -12,7 +12,7 @@ class Achievement extends Model
     protected $fillable = [
         'name',
         'description',
-        'required_purchases',
+        'required_spend',
         'metadata',
     ];
 
