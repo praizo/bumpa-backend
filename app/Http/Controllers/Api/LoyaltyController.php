@@ -14,7 +14,6 @@ class LoyaltyController extends Controller
 
     public function show(Request $request, $userId)
     {
-        // For security, ensure the authenticated user can only view their own data
         if ($request->user()->id != $userId) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
