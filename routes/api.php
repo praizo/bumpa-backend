@@ -17,6 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/purchase', [PurchaseController::class, 'store']);
 
     Route::get('/users/{user}/achievements', [LoyaltyController::class, 'show']);
+    Route::get('/notifications', [LoyaltyController::class, 'notifications']);
 
     Route::get('/user', function (Request $request) {
         return $request->user();

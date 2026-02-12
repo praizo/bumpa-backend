@@ -48,4 +48,10 @@ class LoyaltyController extends Controller
             'next_achievement_progress' => $progress['next_achievement'], // New field for spend info
         ]);
     }
+    public function notifications(Request $request)
+    {
+        return response()->json([
+            'notifications' => $request->user()->notifications,
+        ]);
+    }
 }

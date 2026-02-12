@@ -90,9 +90,9 @@ test('api returns correct progress', function () {
           'remaining_spend' => 5000,
         ]
       ],
-      'current_badge' => 'None', // No badge yet (needs 2)
+      'current_badge' => 'None', 
       'next_badge' => 'Gold',
-      'remaining_to_unlock_next_badge' => 1, // 2 needed - 1 owned
+      'remaining_to_unlock_next_badge' => 1, 
       'next_achievement_progress' => [
         'name' => 'Big Spender',
         'required_spend' => 5000,

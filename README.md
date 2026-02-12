@@ -36,7 +36,7 @@ This project implements a full-stack **Loyalty Program** as an assessment featur
 4.  **Start Application**:
     ```bash
     php artisan serve
-    php artisan queue:work  # Required for event listeners!
+    # php artisan queue:work
     ```
 
 ---
@@ -101,11 +101,12 @@ View the user's current unlocked achievements and badges.
 
 ## 📦 Thresholds to Test
 
-| Action               | Result                           | System Logic                           |
-| :------------------- | :------------------------------- | :------------------------------------- |
-| **10,000 NGN Spend** | **"Big Spender I"** Achievement  | `PurchaseMade` -> `CheckAchievements`  |
-| **30,000 NGN Spend** | **"Big Spender II"** Achievement | `TotalSpend >= 30,000`                 |
-| **2 Achievements**   | **"Gold Badge"**                 | `AchievementUnlocked` -> `CheckBadges` |
+| Action               | Result                          | System Logic                           |
+| :------------------- | :------------------------------ | :------------------------------------- |
+| **1,000 NGN Spend**  | **"First Steps"** Achievement   | `PurchaseMade` -> `CheckAchievements`  |
+| **10,000 NGN Spend** | **"Big Spender I"** Achievement | `TotalSpend >= 10,000`                 |
+| **1 Achievement**    | **"Bronze Badge"**              | `AchievementUnlocked` -> `CheckBadges` |
+| **2 Achievements**   | **"Gold Badge"**                | `Count >= 2`                           |
 
 ---
 
